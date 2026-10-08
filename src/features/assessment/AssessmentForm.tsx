@@ -15,6 +15,7 @@ import { DateInput } from '@mantine/dates';
 import { schemaResolver, useForm } from '@mantine/form';
 import { emptyAssessmentFormValues } from './formValues';
 import { mobilityOptions } from './mobilityOptions';
+import { parseDateInput } from './parseDateInput';
 import { sampleAssessment } from './sampleAssessment';
 import { assessmentSchema, type Assessment } from './schema';
 
@@ -49,9 +50,14 @@ export function AssessmentForm({ onSave }: AssessmentFormProps) {
           {...form.getInputProps('mrn')}
         />
         <TextInput label="Patient name" {...form.getInputProps('patientName')} />
-        <DateInput label="Date of birth" {...form.getInputProps('dateOfBirth')} />
+        <DateInput
+          label="Date of birth"
+          dateParser={parseDateInput}
+          {...form.getInputProps('dateOfBirth')}
+        />
         <DateInput
           label="Assessment date"
+          dateParser={parseDateInput}
           maxDate={dayjs().format('YYYY-MM-DD')}
           {...form.getInputProps('assessmentDate')}
         />
@@ -75,7 +81,11 @@ export function AssessmentForm({ onSave }: AssessmentFormProps) {
           label="Pharmacist review requested"
           {...form.getInputProps('pharmacistReviewRequested', { type: 'checkbox' })}
         />
-        <DateInput label="Next review date" {...form.getInputProps('followUpDate')} />
+        <DateInput
+          label="Next review date"
+          dateParser={parseDateInput}
+          {...form.getInputProps('followUpDate')}
+        />
         <Checkbox
           label="Patient or representative has given consent"
           {...form.getInputProps('consentObtained', { type: 'checkbox' })}
