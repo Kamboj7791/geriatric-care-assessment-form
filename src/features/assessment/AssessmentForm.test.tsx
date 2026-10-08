@@ -24,7 +24,7 @@ describe('AssessmentForm', () => {
 
     // Padding only disappears if onSave gets Zod's trimmed output rather than raw form state.
     await user.clear(screen.getByLabelText('Patient name'));
-    await user.type(screen.getByLabelText('Patient name'), '  Sushila Deshpande  ');
+    await user.paste('  Sushila Deshpande  ');
     expect(screen.getByLabelText('Patient name')).toHaveValue('  Sushila Deshpande  ');
 
     await user.click(screen.getByRole('button', { name: 'Save assessment' }));
