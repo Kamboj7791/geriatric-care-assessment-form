@@ -4,7 +4,7 @@ import { sampleAssessment } from './sampleAssessment';
 import type { Assessment } from './schema';
 
 describe('AssessmentForm', () => {
-  it('saves the parsed sample patient', async () => {
+  it('saves the Zod-parsed sample patient', async () => {
     const user = userEvent.setup();
     const onSave = vi.fn<(assessment: Assessment) => Promise<void>>().mockResolvedValue();
     render(<AssessmentForm onSave={onSave} />);
@@ -21,6 +21,11 @@ describe('AssessmentForm', () => {
     expect(screen.getByLabelText('Pharmacist review requested')).not.toBeChecked();
     expect(screen.getByLabelText('Next review date')).toHaveValue('September 4, 2026');
     expect(screen.getByLabelText('Patient or representative has given consent')).toBeChecked();
+
+    // Padding only disappears if onSave gets Zod's trimmed output rather than raw form state.
+    await user.clear(screen.getByLabelText('Patient name'));
+    await user.type(screen.getByLabelText('Patient name'), '  Sushila Deshpande  ');
+    expect(screen.getByLabelText('Patient name')).toHaveValue('  Sushila Deshpande  ');
 
     await user.click(screen.getByRole('button', { name: 'Save assessment' }));
 
